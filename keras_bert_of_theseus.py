@@ -24,9 +24,9 @@ batch_size = 32
 # checkpoint_path = '/root/kg/bert/chinese_L-12_H-768_A-12/bert_model.ckpt'
 # dict_path = '/root/kg/bert/chinese_L-12_H-768_A-12/vocab.txt'
 
-config_path = '/Users/chang/workspace_of_python/pretrained_language_model/Chinese-BERT-wwm/chinese_roberta_wwm_ext_L-12_H-768_A-12/bert_config.json'
-checkpoint_path = '/Users/chang/workspace_of_python/pretrained_language_model/Chinese-BERT-wwm/chinese_roberta_wwm_ext_L-12_H-768_A-12/bert_model.ckpt'
-dict_path = '/Users/chang/workspace_of_python/pretrained_language_model/Chinese-BERT-wwm/chinese_roberta_wwm_ext_L-12_H-768_A-12/vocab.txt'
+config_path = '/Users/chang/workspace_of_python/pretrained_language_model/Chinese-BERT-wwm/chinese_roberta_wwm_large_ext_L-24_H-1024_A-16/bert_config.json'
+checkpoint_path = '/Users/chang/workspace_of_python/pretrained_language_model/Chinese-BERT-wwm/chinese_roberta_wwm_large_ext_L-24_H-1024_A-16/bert_model.ckpt'
+dict_path = '/Users/chang/workspace_of_python/pretrained_language_model/Chinese-BERT-wwm/chinese_roberta_wwm_large_ext_L-24_H-1024_A-16/vocab.txt'
 
 
 def load_data(filename):
@@ -85,7 +85,7 @@ class BinaryRandomChoice(Layer):
         if mask is not None:
             return mask[1]
 
-    def call(self, inputs):
+    def call(self, inputs, **kwargs):
         source, target = inputs
         mask = K.random_binomial(shape=[1], p=0.5)
         output = mask * source + (1 - mask) * target
@@ -180,7 +180,7 @@ predecessor_model.compile(
 )
 predecessor_model.summary()
 from keras.utils.vis_utils import plot_model
-plot_model(predecessor_model, to_file='predecessor_model.png', show_shapes=True, show_layer_names=True)
+plot_model(predecessor_model, to_file='predecessor_model_large.png', show_shapes=True, show_layer_names=True)
 
 successor_model = Model(successor.inputs, classfier(successor.output))
 successor_model.compile(
@@ -190,7 +190,7 @@ successor_model.compile(
 )
 successor_model.summary()
 from keras.utils.vis_utils import plot_model
-plot_model(successor_model, to_file='successor_model.png', show_shapes=True, show_layer_names=True)
+plot_model(successor_model, to_file='successor_model_large.png', show_shapes=True, show_layer_names=True)
 
 theseus_model = bert_of_theseus(predecessor, successor, classfier)
 theseus_model.compile(
@@ -200,7 +200,7 @@ theseus_model.compile(
 )
 theseus_model.summary()
 from keras.utils.vis_utils import plot_model
-plot_model(theseus_model, to_file='theseus_model.png', show_shapes=True, show_layer_names=True)
+plot_model(theseus_model, to_file='theseus_model_large.png', show_shapes=True, show_layer_names=True)
 
 # if __name__ == '__main__':
 #
